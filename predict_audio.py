@@ -11,7 +11,7 @@ yamnet_model = hub.load("https://tfhub.dev/google/yamnet/1")
 model = joblib.load("cry_shout_model.pkl")
 
 # Class labels
-LABELS = {0: "Crying", 1: "Shouting"}
+LABELS = {0: "Crying", 1: "Shouting", 2: "Other"}
 
 def extract_embedding(file_path):
     audio, sr = librosa.load(file_path, sr=16000)

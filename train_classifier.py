@@ -28,7 +28,7 @@ accuracy = accuracy_score(y_test, y_pred)
 print("\nAccuracy:", accuracy)
 
 print("\nClassification Report:")
-print(classification_report(y_test, y_pred, target_names=["Crying", "Shouting"]))
+print(classification_report(y_test, y_pred, target_names=["Crying", "Shouting","Other"]))
 
 import joblib
 

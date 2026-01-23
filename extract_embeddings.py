@@ -10,7 +10,8 @@ yamnet_model = hub.load("https://tfhub.dev/google/yamnet/1")
 DATASET_PATH = "audio_data"
 CLASSES = {
     "crying": 0,
-    "shouting": 1
+    "shouting": 1,
+    "other":2
 }
 
 X = []

@@ -3,13 +3,15 @@ import numpy as np
 import tensorflow_hub as hub
 import joblib
 import time
+from collections import deque
 
 # Load models
 yamnet_model = hub.load("https://tfhub.dev/google/yamnet/1")
 classifier = joblib.load("cry_shout_model.pkl")
 
 SAMPLE_RATE = 16000
-DURATION = 1  # seconds
+DURATION = 3 # seconds
+prediction_buffer = deque(maxlen=5)  # last 5 seconds
 
 def countdown():
     print("\n Get your voice ready...")
@@ -19,6 +21,18 @@ def countdown():
         time.sleep(1)
     print("🎙️ Go! Listening now...")
     print(" Press Ctrl + C anytime to stop\n")
+
+def check_alert(buffer):
+    crying = sum(1 for l, c in buffer if l == "Crying" and c > 60)
+    shouting = sum(1 for l, c in buffer if l == "Shouting" and c > 60)
+
+    if crying >= 3:
+        return "Crying"
+    if shouting >= 3:
+        return "Shouting"
+    return None
+
+
 
 def predict_live_audio():
     countdown()
@@ -43,10 +57,30 @@ def predict_live_audio():
         prediction = classifier.predict(embedding)[0]
         confidence = np.max(classifier.predict_proba(embedding)) * 100
 
-        label = "Crying " if prediction == 0 else "Shouting "
+        labels = ["Crying", "Shouting", "Other"]
+        label = labels[prediction]
+        # Confidence-based handling (OPTIONAL but safe)
+        # THRESHOLD = 60  # you can tune this
+
+        # if confidence < THRESHOLD:
+        #     label = "Uncertain (Background / Overlap)"
+        # else:
+        #     label = labels[prediction]
+
+        prediction_buffer.append((label, confidence))
 
         print(f" Prediction: {label} | Confidence: {confidence:.2f}%")
-        countdown()
+
+        alert = check_alert(prediction_buffer)
+
+        if alert:
+            print(f"\n🚨 ALERT: Sustained {alert} detected!")
+            print("🛑 Monitoring paused\n")
+            break
+
+
+
+        #countdown()
 
 # Graceful exit
 try:

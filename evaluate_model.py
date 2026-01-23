@@ -25,9 +25,9 @@ cm = confusion_matrix(y_test, y_pred)
 
 disp = ConfusionMatrixDisplay(
     confusion_matrix=cm,
-    display_labels=["Crying", "Shouting"]
+    display_labels=["Crying", "Shouting","Other"]
 )
 
 disp.plot(cmap="Blues")
-plt.title("Confusion Matrix – Crying vs Shouting")
+plt.title("Confusion Matrix – Crying vs Shouting vs Others")
 plt.show()
