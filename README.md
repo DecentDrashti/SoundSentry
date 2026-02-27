@@ -104,8 +104,6 @@ Why this works:
 
 # 🗂 Project File Structure & Purpose
 
----
-
 ## 1️⃣ `test_yamnet.py`
 
 **Purpose:** Sanity check  
@@ -194,7 +192,6 @@ Audio → YAMNet → Embedding → Classifier → Prediction
 
 This repository is organized into structured development phases — from training to embedded deployment.
 
----
 
 ## 🧠 `tinyml_mfcc/`
 
@@ -214,6 +211,12 @@ Contains Python scripts responsible for:
 - Saving trained models
 
 This is where your TinyML-compatible classifier is trained.
+
+### 1.Train_mfcc.py: train the model and take the input as a file of audio data and train using mfcc
+### 2. convert_to_tflite.py: convert the model which is created by train_mfcc to tflite model 
+### 3. convert_to_int8.py: convert the model from tflite to int8 for deploying in esp32 
+### 4. convert_c_array.py: convert the model to c_array 
+### 5.voice_ino : is a folder which contains final model and then the ino file for deploying 
 ---
 
 Each subfolder represents a purpose-specific dataset split to ensure clean training, testing, and validation workflow.
